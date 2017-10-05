@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Make a Blog Post!</h2>
+<form action='/blog-post' method='post'>
+    <label>Blog Title:
+        <input type='text' name='title' />
+    </label>
+    <br />
+    <br />
+    <p><label>Make your post here:</label></p>
+    <textarea style='resize: none;' rows='10' cols='50' name='content'></textarea>
+    <br />
+    <input type='submit' value='Post!' />
+</form>
+<p><a href='/'>Return to Blog</a></p>
+
+{% endblock %}

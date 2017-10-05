@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Welcome to my Blog!</h2>
+<a href='/make-post'>Make a Blog Post</a>
+{% for entry in entries %}
+<form method='get'>
+    <a href='/?id={{entry.id}}'><h3><u>{{entry.title}}</u></h3></a>
+    {{entry.content}}
+</form>
+{% endfor %}
+{% endblock %}
