@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 app.config['DEBUG'] = True
 # Connect to MySQL server
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://build-a-blog:@5ukALS02c@localhost:8889/build-a-blog'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://build-a-blog2:12345@localhost:8889/build-a-blog2'
 # Print SQL comms in terminal
 app.config['SQLALCHEMY_ECHO'] = True
 
