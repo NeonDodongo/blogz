@@ -6,7 +6,7 @@
 {% for entry in entries %}
 <form method='get'>
     <a href='/?id={{entry.id}}'><h3><u>{{entry.title}}</u></h3></a>
-    {{entry.content}}
+    <p>{{entry.content}}</p>
 </form>
 {% endfor %}
 {% endblock %}
