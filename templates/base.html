@@ -9,8 +9,14 @@
         <nav>
             <ul>
                 <li><a href="/">Home</a></li>
-                <li style='float:right;'><a href="/">Log In</a></li>
-                <li style='float:right;'><a href="/">Sign Up</a></li>
+                <li><a href='/blog'>Blog</a></li>
+                {% if session %}             
+                <li style='float:right;'><a href="/logout">Log Out</a></li> 
+                <li style='float:right;'><a href="/singleUser">My Posts</a></li>                                
+                {% else %}
+                <li style='float:right;'><a href="/login">Log In</a></li>
+                <li style='float:right;'><a href="/signup">Sign Up</a></li>                
+                {% endif %}
             </ul>
         </nav>
         <div class='body-wrap'>

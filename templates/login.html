@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Please Log In</h2>
+<form action='/login' method='post'>
+    <table>
+        <tr>
+            <td>Username: </td>
+            <td>
+                <input type='text' name='username' value='{{username}}'/>
+            </td>
+        </tr>
+        <tr>
+            <td>Password: </td>
+            <td>
+                <input type='password' name='password' />
+            </td>
+        </tr>
+    </table>
+    <input type='submit' value='Log In' />
+</form>
+{% with messages = get_flashed_messages(with_categories=True) %}
+    {% for category, message in messages %}
+        <p class='{{category}}'>{{message}}</p>
+    {% endfor %}
+{% endwith %}
+<p>If you don't have an account, click <a href='/signup'>HERE</a> to sign up.</p>
+{% endblock %}

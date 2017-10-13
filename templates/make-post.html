@@ -14,6 +14,11 @@
     <br />
     <input type='submit' value='Post!' />
 </form>
+{% with messages = get_flashed_messages(with_categories=True) %}
+{% for category, message in messages %}
+    <p class='{{category}}'>{{message}}</p>
+{% endfor %}
+{% endwith %}
 <p><a href='/'>Return to Blog</a></p>
 
 {% endblock %}
