@@ -1,18 +1,18 @@
 <!DOCTYPE HTML>
 <html>
     <head>
-        <title>Build A Blog</title>
-
+        <title>Blogz</title>
+        <link href="https://fonts.googleapis.com/css?family=Muli" rel="stylesheet"> 
         <link rel="stylesheet" type="text/css" href="../static/styles/style.css" />
     </head>
     <body>
         <nav>
             <ul>
-                <li><a href="/">Home</a></li>
-                <li><a href='/blog'>Blog</a></li>
-                {% if session %}             
-                <li style='float:right;'><a href="/logout">Log Out</a></li> 
-                <li style='float:right;'><a href="/singleUser">My Posts</a></li>                                
+                <li style='float: left;'><a href="/">Home</a></li>
+                <li style='float: left;'><a href='/blog'>Blog</a></li>
+                {% if session|length > 0 %}             
+                <li style='float:right;'><a href="/logout">Log Out</a></li>
+                <li style='float:right;'><a href="/singleUser">My Posts</a></li>                                 
                 {% else %}
                 <li style='float:right;'><a href="/login">Log In</a></li>
                 <li style='float:right;'><a href="/signup">Sign Up</a></li>                
@@ -25,8 +25,8 @@
                 {% endblock %}
             </div>
         </div>
-        <footer>
+        <div class='footer'>
                 Will Irmler &copy; 2017
-        </footer>
+        </div>
     </body>
 </html>

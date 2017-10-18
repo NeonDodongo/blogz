@@ -1,6 +1,10 @@
 from flask import Flask, redirect, request, render_template, session, flash
 from flask_sqlalchemy import SQLAlchemy
 
+from datetime import datetime
+
+from sqlalchemy import desc
+
 app = Flask(__name__)
 
 app.config['DEBUG'] = True
@@ -17,12 +21,17 @@ class Blog(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(50))
     content = db.Column(db.String(150))
+    post_date = db.Column(db.DateTime)
     owner_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
-    def __init__(self, title, content, owner):
+    def __init__(self, title, content, owner, post_date=None):
         self.title = title
         self.content = content
         self.owner = owner
+        if post_date is None:
+            post_date = datetime.utcnow()
+        self.post_date = post_date
+
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -55,7 +64,7 @@ def signup():
                     db.session.add(new_user)
                     db.session.commit()
                     session['username'] = username
-                    return render_template('/make-post', username=username, session=session['username'])
+                    return render_template('/make-post.html', username=username)
                 else:
                     flash('Username is taken :(', 'error')
                     return redirect('/make-post')
@@ -78,7 +87,7 @@ def login():
         if user:
             if password == user.password:
                 session['username'] = username
-                return render_template('make-post.html', username=session['username'])
+                return render_template('make-post.html')
             else:
                 flash('Incorrect password', 'error')
                 return render_template('login.html', username=username)
@@ -92,9 +101,10 @@ def login():
 def logout():
     del session['username']
     blog_posts = Blog.query.all()
-    return render_template('blog.html', entries=blog_posts)
+    users = User.query.all()
+    return render_template('blog.html', entries=blog_posts, users=users)
 
-@app.route('/blog-post', methods=['POST'])
+@app.route('/make-post', methods=['POST'])
 def blog_post():
     title = request.form['title']
     content = request.form['content']
@@ -119,6 +129,7 @@ def index():
         user = User.query.filter_by(id=user_id).first()
         user_posts = Blog.query.filter_by(owner_id=user_id).all()
         return render_template('singleUser.html', user_posts=user_posts, user=user)
+    
     users = User.query.all()
     return render_template('index.html', users=users)
 
@@ -128,14 +139,23 @@ def blog():
     if entry_id:
         single_post = Blog.query.get(entry_id)
         return render_template('single-post.html', entry=single_post)
+    
     users = User.query.all()
-    blog_posts = Blog.query.all()
+    blog_posts = Blog.query.order_by(desc(Blog.post_date)).all()
     return render_template('blog.html', entries=blog_posts, users=users)
 
 @app.route('/singleUser', methods=['POST', 'GET'])
 def my_posts():
-    user = User.query.filter_by(username=session['username']).first()
-    user_posts = Blog.query.filter_by(owner_id=user.id)
+    user_id = request.args.get('id')
+    if user_id:
+        user_posts = Blog.query.filter_by(owner_id=user_id)
+        user = User.query.filter_by(id=user_id).first()
+        return render_template('singleUser.html', user_posts=user_posts, user=user)
+
+    username = session['username']
+    user = User.query.filter_by(username=username).first()
+    user_id = user.id
+    user_posts = Blog.query.filter_by(owner_id=user_id).order_by(desc(Blog.post_date)).all()
     return render_template('singleUser.html', user=user, user_posts=user_posts)
 
 @app.route('/make-post', methods=['GET'])
