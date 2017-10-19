@@ -2,16 +2,20 @@
 
 {% block content %}
 <h1>Welcome to my Blog!</h1>
-<p style='float: right;'><a href='/make-post'>>>>Make a Blog Post</a></p>
+<p style='float: right;'><a href='/make-post'><b>>>>Make a Blog Post</b></a></p>
+{% if entries %}
 {% for entry in entries %}
 <form method='get' style='border-bottom: solid;'>
     <a href='/blog?id={{entry.id}}'><h3><u>{{entry.title}}</u></h3></a>
     <p style='padding-bottom: 25px; font-size: 25px;'>{{entry.content}}</p>
     {% for user in users %}
         {% if user.id == entry.owner_id %}
-            <p style="font-size: 13px;" class='author'>Posted by: <a href='/singleUser?id={{user.id}}'>{{user.username}}</a> on {{entry.post_date}}</p>
+            <p style="font-size: 13px;">Posted by: <a href='/singleUser?id={{user.id}}'>{{user.username}}</a> on {{entry.post_date}}</p>
         {% endif %}
     {% endfor %}
 </form>
 {% endfor %}
+{% else %}
+<h3 style='font-size: 50px; text-align: center;'>There's nothing here :(</h3>
+{% endif %}
 {% endblock %}

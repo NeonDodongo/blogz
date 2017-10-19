@@ -2,20 +2,20 @@
 <html>
     <head>
         <title>Blogz</title>
-        <link href="https://fonts.googleapis.com/css?family=Muli" rel="stylesheet"> 
-        <link rel="stylesheet" type="text/css" href="../static/styles/style.css" />
+        <link href='https://fonts.googleapis.com/css?family=Jura' rel='stylesheet' />  
+        <link href="../static/styles/style.css" rel='stylesheet' type='text/css' />
     </head>
     <body>
         <nav>
             <ul>
-                <li style='float: left;'><a href="/">Home</a></li>
-                <li style='float: left;'><a href='/blog'>Blog</a></li>
+                <a href="/"><li style='float: left;'>Home</li></a>
+                <a href='/blog'><li style='float: left;'>Blog</li></a>
                 {% if session|length > 0 %}             
-                <li style='float:right;'><a href="/logout">Log Out</a></li>
-                <li style='float:right;'><a href="/singleUser">My Posts</a></li>                                 
+                <a href="/logout"><li style='float:right;'>Log Out</li></a>
+                <a href="/singleUser"><li style='float:right;'>My Posts</li></a>                                
                 {% else %}
-                <li style='float:right;'><a href="/login">Log In</a></li>
-                <li style='float:right;'><a href="/signup">Sign Up</a></li>                
+                <a href="/login"><li style='float:right;'>Log In</li></a>
+                <a href="/signup"><li style='float:right;'>Sign Up</li></a>          
                 {% endif %}
             </ul>
         </nav>

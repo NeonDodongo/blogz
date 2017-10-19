@@ -17,12 +17,12 @@
             </td>
         </tr>
     </table>
-    <input type='submit' value='Log In' />
+    <input class='submit-button' type='submit' value='Log In' />
 </form>
 {% with messages = get_flashed_messages(with_categories=True) %}
     {% for category, message in messages %}
         <p class='{{category}}'>{{message}}</p>
     {% endfor %}
 {% endwith %}
-<p>If you don't have an account, click <a href='/signup'>HERE</a> to sign up.</p>
+<p>If you don't have an account, click <a href='/signup'><u>HERE</u></a> to sign up.</p>
 {% endblock %}

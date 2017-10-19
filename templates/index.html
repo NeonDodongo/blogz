@@ -2,9 +2,23 @@
 
 {% block content %}
 <h1>List of Users</h1>
-<ul>
+<table style='margin: auto;'>
 {% for user in users %}
-    <li class='users'><h3><a href='/singleUser?id={{user.id}}'><b>{{user.username}}</b></a></h3></li>
+    <tr>
+       <td><h3><a href='/?id={{user.id}}'><b>{{user.username}}</b></a></h3></td>
+       <td></td>
+       <td></td>
+       <td> --- </td>
+       <td></td>
+       <td></td>
+       <td>
+        {% if last_active[user.id] %}
+            Last Active: {{last_active[user.id]}}
+        {% else %}
+            Last Active: User hasn't made a post yet
+        {% endif %}
+        </td>
+    </tr> 
 {% endfor %}
-</ul>
+</table>
 {% endblock %}

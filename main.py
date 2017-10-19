@@ -1,9 +1,8 @@
 from flask import Flask, redirect, request, render_template, session, flash
 from flask_sqlalchemy import SQLAlchemy
-
 from datetime import datetime
-
 from sqlalchemy import desc
+from hashutils import make_pw_hash, check_pw_hash, make_salt
 
 app = Flask(__name__)
 
@@ -20,7 +19,7 @@ db = SQLAlchemy(app)
 class Blog(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(50))
-    content = db.Column(db.String(150))
+    content = db.Column(db.String(175))
     post_date = db.Column(db.DateTime)
     owner_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
@@ -29,25 +28,25 @@ class Blog(db.Model):
         self.content = content
         self.owner = owner
         if post_date is None:
-            post_date = datetime.utcnow()
+            post_date = datetime.now()
         self.post_date = post_date
 
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(60))
-    password = db.Column(db.String(20))
+    username = db.Column(db.String(30))
+    pw_hash = db.Column(db.String(120))
     blog = db.relationship('Blog', backref='owner')
 
     def __init__(self, username, password):
         self.username = username
-        self.password = password
+        self.pw_hash = make_pw_hash(password)
 
 @app.before_request
 def require_login():
     allowed_routes = ['login', 'signup', 'index', 'blog']
     if request.endpoint not in allowed_routes and 'username' not in session:
-        return redirect('/login')
+        return render_template('login.html')
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -85,7 +84,7 @@ def login():
         user = User.query.filter_by(username=username).first()
 
         if user:
-            if password == user.password:
+            if check_pw_hash(password, user.pw_hash):
                 session['username'] = username
                 return render_template('make-post.html')
             else:
@@ -100,9 +99,7 @@ def login():
 @app.route('/logout')
 def logout():
     del session['username']
-    blog_posts = Blog.query.all()
-    users = User.query.all()
-    return render_template('blog.html', entries=blog_posts, users=users)
+    return redirect('/blog')
 
 @app.route('/make-post', methods=['POST'])
 def blog_post():
@@ -128,17 +125,25 @@ def index():
     if user_id:
         user = User.query.filter_by(id=user_id).first()
         user_posts = Blog.query.filter_by(owner_id=user_id).all()
-        return render_template('singleUser.html', user_posts=user_posts, user=user)
-    
-    users = User.query.all()
-    return render_template('index.html', users=users)
+        return render_template('singleUser.html', user_posts=user_posts, user=user)  
+
+    users = User.query.order_by(User.username)
+    blogs = Blog.query.order_by(desc(Blog.post_date))
+    last_active = {}
+    for user in users:
+        for blog in blogs:
+            if user.id == blog.owner_id:
+                last_active[user.id] = blog.post_date
+                break
+    return render_template('index.html', users=users, last_active=last_active)
 
 @app.route('/blog', methods=['POST', 'GET'])
 def blog():
     entry_id = request.args.get('id')
     if entry_id:
         single_post = Blog.query.get(entry_id)
-        return render_template('single-post.html', entry=single_post)
+        user = User.query.filter_by(id=single_post.owner_id).first()
+        return render_template('single-post.html', entry=single_post, user=user)
     
     users = User.query.all()
     blog_posts = Blog.query.order_by(desc(Blog.post_date)).all()
@@ -148,14 +153,13 @@ def blog():
 def my_posts():
     user_id = request.args.get('id')
     if user_id:
-        user_posts = Blog.query.filter_by(owner_id=user_id)
+        user_posts = Blog.query.filter_by(owner_id=user_id).order_by(desc(Blog.post_date))
         user = User.query.filter_by(id=user_id).first()
         return render_template('singleUser.html', user_posts=user_posts, user=user)
 
     username = session['username']
     user = User.query.filter_by(username=username).first()
-    user_id = user.id
-    user_posts = Blog.query.filter_by(owner_id=user_id).order_by(desc(Blog.post_date)).all()
+    user_posts = Blog.query.filter_by(owner_id=user.id).order_by(desc(Blog.post_date)).all()
     return render_template('singleUser.html', user=user, user_posts=user_posts)
 
 @app.route('/make-post', methods=['GET'])
