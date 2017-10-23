@@ -23,7 +23,10 @@ nav ul li {
 }
 
 nav ul li:hover {
-    background-color: #c0d6db; 
+    color: #abc5cc;
+    background-color: #5ebbe0;
+    box-shadow: 0px 3px 25px 1px;
+    border-radius: 1.2px;
 }
 
 nav {
@@ -36,7 +39,7 @@ nav {
     width: 100%;
     top: 0;
     height: 55px;
-    opacity: 0.88;
+    opacity: 0.89;
 }
 
 h1 {
@@ -48,12 +51,12 @@ h1 {
 }
 
 h3 {
-    font-size: 32px;
+    font-size: 35px;
     display: inline-block;
 }
 
 form p {
-    font-style: 26px;
+    font-style: 24px;
 }
 
 a {
@@ -61,17 +64,15 @@ a {
     width: 100%;
     height:100%;
     font-weight: bold;
+    color: #140542;
 }
 
 a:link {
     color: black;
 }
 
-a:visited {
-    color: black;
-}
 a:hover {
-    color: #35245b;
+    color: #89a5b5;
 }
 
 form p {
@@ -93,13 +94,13 @@ form p {
 }
 
 .body-wrap {
-    width: 81%;
+    width: 69%;
     position: relative;
     background-color: #d0e5ed;
     min-height: 1080px;
     margin: auto;
     margin-top: 54px;
-    box-shadow: 0px -1px 10px 0px;
+    box-shadow: 0px -1px 40px 5px;
     top: 0;
 }
 

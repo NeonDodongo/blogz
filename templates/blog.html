@@ -1,13 +1,15 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Welcome to my Blog!</h1>
-<p style='float: right;'><a href='/make-post'><b>>>>Make a Blog Post</b></a></p>
+<h1>All Posts</h1>
+<br />
+<p style='float: right;'><a href='/make-post'><b>>>>Create a Post</b></a></p>
+
 {% if entries %}
 {% for entry in entries %}
 <form method='get' style='border-bottom: solid;'>
-    <a href='/blog?id={{entry.id}}'><h3><u>{{entry.title}}</u></h3></a>
-    <p style='padding-bottom: 25px; font-size: 25px;'>{{entry.content}}</p>
+    <a href='/blog?id={{entry.id}}'><h3>{{entry.title}}</h3></a>
+    <p style='padding-bottom: 25px; font-size: 25px; margin:auto;'>{{entry.content}}</p>
     {% for user in users %}
         {% if user.id == entry.owner_id %}
             <p style="font-size: 13px;">Posted by: <a href='/singleUser?id={{user.id}}'>{{user.username}}</a> on {{entry.post_date}}</p>

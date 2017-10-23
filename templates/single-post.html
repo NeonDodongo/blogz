@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <form>
+    <form style='border-bottom: solid;'>
         <h1 style='padding-bottom: 50px;'>{{entry.title}}</h1>
         <p style='padding-bottom: 25px; font-size: 25px;'>{{entry.content}}</p>
         <p style='font-size: 13px;'>Posted by <a href='/singleUser?id={{user.id}}'>{{user.username}}</a> on {{entry.post_date}}</p>
-        <hr />
     </form>
+    <br />
     <a href='/blog'><b>>>>Back to Blog</b></a>
 {% endblock %}

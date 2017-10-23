@@ -1,11 +1,18 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>List of Users</h1>
+<h1>Registered Users</h1>
 <table style='margin: auto;'>
 {% for user in users %}
     <tr>
-       <td><h3><a href='/?id={{user.id}}'><b>{{user.username}}</b></a></h3></td>
+        {% if session['username'] == user.username %}
+        <td style='font-size: 14px; padding-right: 10px;'>That's you ---></td>
+        {% else %}
+        <td></td>
+        {% endif %}
+       <td>
+           <h3><a href='/?id={{user.id}}'><b>{{user.username}}</b></a></h3>
+       </td> 
        <td></td>
        <td></td>
        <td> --- </td>

@@ -4,12 +4,11 @@
 <h1>Posts by: {{user.username}}</h1>
 {% if user_posts %}
 {% for post in user_posts %}
-<form method='get'>
+<form method='get' style='border-bottom: solid;'>
     <a href='/blog?id={{post.id}}'><h3><u>{{post.title}}</u></h3></a>
     <p style='padding-bottom: 25px; font-size: 25px;'>{{post.content}}</p>
     <p style="font-size: 13px;" class='author'>Posted on: {{post.post_date}}</p>
 </form>
-<hr />
 {% endfor %}
 {% else %}
 <h3 style='font-size: 50px; text-align: center;'>There's nothing here :(</h3>

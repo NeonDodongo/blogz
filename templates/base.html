@@ -10,9 +10,11 @@
             <ul>
                 <a href="/"><li style='float: left;'>Home</li></a>
                 <a href='/blog'><li style='float: left;'>Blog</li></a>
-                {% if session|length > 0 %}             
+                <a href='/make-post'><li style='float: left;'>Post</li></a>
+                {% if session['username'] %}           
                 <a href="/logout"><li style='float:right;'>Log Out</li></a>
-                <a href="/singleUser"><li style='float:right;'>My Posts</li></a>                                
+                <a href="/singleUser"><li style='float:right;'>My Posts</li></a>
+                <div style='float: right; padding: 15px; font-size: 18px; color: green;'>Logged in as: <b>{{session['username']}}</b></div>                             
                 {% else %}
                 <a href="/login"><li style='float:right;'>Log In</li></a>
                 <a href="/signup"><li style='float:right;'>Sign Up</li></a>          

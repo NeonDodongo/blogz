@@ -2,23 +2,28 @@
 
 {% block content %}
 
-<h1>Make a Blog Post!</h1>
+<h1>Create a Post</h1>
+<br />
+<br />
 <form action='/make-post' method='post'>
-    <label>Blog Title:
-        <input type='text' style='width: 324px;'name='title'/>
+    <label>Title:
+        <br />
+        <input type='text' style='width: 415px;'name='title'/>
     </label>
     <br />
     <br />
-    <p><label>Make your post here:</label></p>
-    <textarea style='resize: none;' rows='10' cols='50' name='content'></textarea>
+    <p><label>Content (175 Char Max):</label></p>
+    <textarea style='resize: none;' rows='10' cols='50' maxlength='175' name='content'></textarea>
+    <br />
     <br />
     <input class='submit-button' type='submit' value='Submit' />
+
 </form>
 {% with messages = get_flashed_messages(with_categories=True) %}
 {% for category, message in messages %}
     <p class='{{category}}'>{{message}}</p>
 {% endfor %}
 {% endwith %}
-<p><a href='/'><b>>>>Return to Blog</b></a></p>
+<p><a href='/blog'><b>>>>Return to Blog</b></a></p>
 
 {% endblock %}
